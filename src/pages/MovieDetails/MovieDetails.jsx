@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useRef} from 'react';
 import { Outlet, useParams, useLocation, Link } from 'react-router-dom';
 import { getMovieDetails } from 'api/api';
 import { TopWrapp, Img, List, BottomWrapp, Links } from './MovieDetails.styled';
@@ -8,8 +8,8 @@ const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState({});
 
-  const location = useLocation();
-  const detailsLink = location.state?.from ?? '/';
+  const { state } = useLocation();
+  const { current } = useRef(state?.from ?? '/');
 
   const imageUrl = 'https://image.tmdb.org/t/p/w500/';
 
@@ -30,8 +30,7 @@ const MovieDetails = () => {
   return (
     <>
       <Link
-        to={detailsLink}
-        state={{ from: location }}
+        to={current}
         style={{ marginLeft: '30px' }}
       >
         Go back
